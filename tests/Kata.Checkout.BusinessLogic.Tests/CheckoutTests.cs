@@ -19,10 +19,13 @@ namespace Kata.Checkout.BusinessLogic.Tests
             checkout.Scan(new Item("A99", 0.50m));
             Assert.True(checkout.Total() > 0);   
         }
-
+        
+        [Fact]
         public void CheckoutShouldCalculateATotal()
         {
-            Assert.True(checkout.Total() > 0);
+            checkout.Scan(new Item("A99", 0.50m));
+            checkout.Scan(new Item("B15", 0.30m));
+            Assert.Equal(checkout.Total(), 0.80m);
         }
     }
 }
