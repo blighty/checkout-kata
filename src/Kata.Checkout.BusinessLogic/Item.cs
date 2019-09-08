@@ -21,11 +21,11 @@ namespace Kata.Checkout.BusinessLogic
             decimal result = 0m;
             if (Offer != null && quantity >= this.Offer.Quantity) 
             {
-                int numOfferPriceItems = quantity % this.Offer.Quantity;
-                int numFullPriceItems = quantity - numOfferPriceItems;
+                int numOfferPriceItems = quantity / this.Offer.Quantity;
+                int numFullPriceItems = quantity % this.Offer.Quantity;
                 result = numOfferPriceItems * this.Offer.OfferPrice;
                 result += numFullPriceItems * this.Price;
-            }
+            } 
             else
             {
                 result = this.Price * quantity;
