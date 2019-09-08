@@ -5,11 +5,12 @@ namespace Kata.Checkout.BusinessLogic
 {
     public class Checkout
     {
-        private Dictionary<string, decimal> priceList = new Dictionary<string, decimal>(){
-            {"A99", 0.50m},
-            {"B15", 0.30m},
-            {"C40", 0.60m}
+        private Dictionary<string, Item> priceList = new Dictionary<string, Item>(){
+            {"A99", new Item("A99", 0.50m, new Offer(3, 1.30m))},
+            {"B15",  new Item("B15", 0.30m, new Offer(2, 0.45m))},
+            {"C40", new Item("C40", 0.60m, null)}
         };
+
         private Dictionary<string, int> scannedItems = new Dictionary<string, int>();
 
         public decimal Total()
@@ -17,13 +18,14 @@ namespace Kata.Checkout.BusinessLogic
             decimal result = 0m;
             foreach (KeyValuePair<string, int> item in scannedItems)
             {
-                if (priceList.TryGetValue(item.Key, out decimal itemPrice) == false){
-                    itemPrice = 0;
+                if (priceList.TryGetValue(item.Key, out Item sku)){
+                    result += sku.GetPrice(item.Value);    
                 }
-                result += (itemPrice * item.Value);
             }
             return result;
         }
+
+
 
         public void Scan(Item item)
         {

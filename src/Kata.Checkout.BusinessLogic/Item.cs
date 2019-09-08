@@ -1,11 +1,36 @@
-public class Item
+namespace Kata.Checkout.BusinessLogic
 {
-    public Item(string sku, decimal price)
+    public class Item
     {
-        Sku = sku;
-        Price = price;
-    }
 
-    public string Sku { get; }
-    public decimal Price { get; }
+        public Item(string sku, decimal price, Offer offer)
+        {
+            Sku = sku;
+            Price = price;
+            Offer = offer;
+        }
+
+        public string Sku { get; }
+
+        public Offer Offer { get; }
+
+        private decimal Price { get; }
+
+        public decimal GetPrice(int quantity)
+        {
+            decimal result = 0m;
+            if (Offer != null && quantity >= this.Offer.Quantity) 
+            {
+                int numOfferPriceItems = quantity % this.Offer.Quantity;
+                int numFullPriceItems = quantity - numOfferPriceItems;
+                result = numOfferPriceItems * this.Offer.OfferPrice;
+                result += numFullPriceItems * this.Price;
+            }
+            else
+            {
+                result = this.Price * quantity;
+            }
+            return result;
+        }
+    }
 }
